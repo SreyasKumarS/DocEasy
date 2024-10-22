@@ -101,5 +101,49 @@ class AdminService {
             throw new Error('Internal server error');
         }
     }
+    // Fetch unapproved doctors----------------------------------------------------------------
+    async fetchUnapprovedDoctors() {
+        try {
+            console.log('entered bacekkn service for unapproved');
+            const unapprovedDoctors = await AdminRepository.findUnapprovedDoctors();
+            return unapprovedDoctors;
+            // Return the list of unapproved doctors
+        }
+        catch (error) {
+            console.error('Error fetching unapproved doctors:', error);
+            throw new Error('Internal server error');
+        }
+    }
+    // Approve a doctor
+    async approveDoctor(doctorId) {
+        try {
+            const doctor = await AdminRepository.findDoctorById(doctorId);
+            if (!doctor) {
+                throw new Error('Doctor not found');
+            }
+            doctor.isApproved = true; // Update the doctor's approval status
+            await AdminRepository.updateDoctor(doctor); // Save changes
+        }
+        catch (error) {
+            console.error('Error approving doctor:', error);
+            throw new Error('Internal server error');
+        }
+    }
+    // Reject a doctor
+    async deleteDoctor(doctorId) {
+        try {
+            const doctor = await AdminRepository.findDoctorById(doctorId);
+            if (!doctor) {
+                throw new Error('Doctor not found');
+            }
+            // Call the delete function to remove the doctor
+            await AdminRepository.deleteDoctor(doctorId);
+            console.log('Doctor has been deleted successfully.');
+        }
+        catch (error) {
+            console.error('Error rejecting (deleting) doctor:', error);
+            throw new Error('Internal server error');
+        }
+    }
 }
 export default new AdminService();

@@ -82,8 +82,8 @@ const Header = () => {
                     Login
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="loginDropdown">
-                    <li><a className="dropdown-item" href="/login/doctor">As Doctor</a></li>
-                    <li><a className="dropdown-item" href="/login/patient">As Patient</a></li>
+                    <li><a className="dropdown-item" href="/doctor/login">As Doctor</a></li>
+                    <li><a className="dropdown-item" href="/login">As Patient</a></li>
                   </ul>
                 </li>
                 <li className="nav-item dropdown">

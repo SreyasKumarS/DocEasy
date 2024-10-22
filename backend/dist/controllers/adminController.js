@@ -83,4 +83,41 @@ const resetAdminPassword = async (req, res, next) => {
         next(error);
     }
 };
-export { verifyOtp, resendOtp, loginAdmin, logoutAdmin, sendAdminResetOtp, resetAdminPassword };
+//doctor aprovals------------------------------------------------------------------------------------------
+// Fetch unapproved doctors
+const fetchUnapprovedDoctors = async (req, res, next) => {
+    try {
+        const doctors = await AdminService.fetchUnapprovedDoctors(); // Fetch unapproved doctors from the service
+        return res.status(200).json(doctors);
+    }
+    catch (error) {
+        console.error('Error fetching unapproved doctors:', error);
+        next(error);
+    }
+};
+// Approve a doctor
+const approveDoctor = async (req, res, next) => {
+    const { doctorId } = req.params;
+    try {
+        await AdminService.approveDoctor(doctorId); // Approve doctor in the service
+        return res.status(200).json({ message: 'Doctor approved successfully' });
+    }
+    catch (error) {
+        console.error('Error approving doctor:', error);
+        next(error);
+    }
+};
+// Reject a doctor
+const deleteDoctor = async (req, res, next) => {
+    console.log('entered bacekkn for unapproved');
+    const { doctorId } = req.params;
+    try {
+        await AdminService.deleteDoctor(doctorId); // Reject doctor in the service
+        return res.status(200).json({ message: 'Doctor rejected successfully' });
+    }
+    catch (error) {
+        console.error('Error rejecting doctor:', error);
+        next(error);
+    }
+};
+export { verifyOtp, resendOtp, loginAdmin, logoutAdmin, sendAdminResetOtp, resetAdminPassword, fetchUnapprovedDoctors, approveDoctor, deleteDoctor };

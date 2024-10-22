@@ -74,7 +74,7 @@ const DoctorHeader = () => {
                     Login
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="loginDropdown">
-                    <li><a className="dropdown-item" href="/register">Doctor </a></li>
+                    <li><a className="dropdown-item" href="/doctor/login">Doctor </a></li>
                   </ul>
                 </li>
               </>

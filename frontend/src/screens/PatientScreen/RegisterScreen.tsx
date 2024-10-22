@@ -43,11 +43,21 @@ const RegisterScreen: React.FC = () => {
     };
   }, [timer, isOtpSent, resendDisabled]);
 
+  const validateName = (name: string) => /^[A-Za-z\s]{3,}$/.test(name);  // Allows letters and spaces, at least 3 characters
+  const validateEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);  // Standard email validation
+  const validatePassword = (password: string) => /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{6,}$/.test(password);  // At least 6 characters, with at least one uppercase, one lowercase, one digit, and one special character
+
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!isOtpSent) {
-      if (password !== confirmPassword) {
+      if (!validateName(name)) {
+        toast.error('Invalid name. Name must be at least 3 characters long and contain only letters.');
+      } else if (!validateEmail(email)) {
+        toast.error('Invalid email format.');
+      } else if (!validatePassword(password)) {
+        toast.error('Password must be at least 6 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character.');
+      } else if (password !== confirmPassword) {
         toast.error('Passwords do not match');
       } else {
         try {
@@ -56,14 +66,14 @@ const RegisterScreen: React.FC = () => {
           setTimer(60);
           setResendDisabled(true);
         } catch (error) {
-          toast.error('User Already Exist! Try another Mail ID ');
+          toast.error('User Already Exist! Try another Mail ID');
         }
       }
     } else if (isOtpSent && otp.trim() !== '') {
       try {
         await verifyOtp({ email, otp }).unwrap();
       } catch (error) {
-        toast.error('invalid OTP!');
+        toast.error('Invalid OTP!');
       }
     } else {
       toast.error('Please enter the OTP');
@@ -80,7 +90,6 @@ const RegisterScreen: React.FC = () => {
     }
   };
 
-  
   useEffect(() => {
     if (otpVerified) {
       toast.success('Registration completed successfully!');
@@ -94,7 +103,6 @@ const RegisterScreen: React.FC = () => {
       <Form onSubmit={submitHandler}>
         {!isOtpSent ? (
           <>
-            {/* Registration Form */}
             <Form.Group className="my-2" controlId='name'>
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -108,7 +116,7 @@ const RegisterScreen: React.FC = () => {
             <Form.Group className="my-2" controlId='email'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control
-                type="email"
+                // type="email"
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -141,7 +149,6 @@ const RegisterScreen: React.FC = () => {
           </>
         ) : (
           <>
-            {/* OTP Form */}
             <Form.Group className="my-2" controlId='otp'>
               <Form.Label>OTP</Form.Label>
               <Form.Control

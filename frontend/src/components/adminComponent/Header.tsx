@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutAdminMutation } from '../../slices/adminSlice/adminApiSlice';
 import { clearCredentials } from '../../slices/adminSlice/adminAuthSlice'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { RootState } from '../../../store';
@@ -27,24 +27,24 @@ const AdminHeader = () => {
 
   return (
     <nav
-      className="navbar navbar-expand-lg"
-      style={{
-        backgroundColor: '#ffc107', 
-        padding: '10px 50px',
-        fontFamily: "'Poppins', sans-serif",
-      }}
-    >
-      <div className="container-fluid">
-        <a
-          className="navbar-brand text-white"
-          href="#"
-          style={{
-            fontSize: '1.5rem',
-            fontWeight: '600',
-          }}
-        >
-          Admin Panel
-        </a>
+    className="navbar navbar-expand-lg"
+    style={{
+      backgroundColor: '#ffc107', 
+      padding: '10px 50px',
+      fontFamily: "'Poppins', sans-serif",
+    }}
+  >
+    <div className="container-fluid">
+      <Link
+        className="navbar-brand text-white"
+        to="/admin/adminHomeScreen" // Set the route you want to navigate to
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: '600',
+        }}
+      >
+       Admin Panel
+      </Link>
         <button
           className="navbar-toggler"
           type="button"

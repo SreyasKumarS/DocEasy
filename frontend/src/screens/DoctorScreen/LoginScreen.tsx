@@ -5,6 +5,7 @@ import FormContainer from "../../components/patientComponents/FormContainer";
 import { useLoginDoctorMutation } from '../../slices/doctorSlice/doctorApiSlice'; 
 import { setCredentials } from "../../slices/doctorSlice/doctorAuthSlice"; 
 import { useDispatch } from 'react-redux'; 
+import { toast } from "react-toastify";
 
 
 
@@ -21,10 +22,9 @@ const DoctorLoginScreen: React.FC = () => {
     try {
       const result = await loginDoctor({ email, password }).unwrap();
       dispatch(setCredentials(result));  
-      console.log('doc Login successful, received token:', result.token);
       navigate('/doctor/DoctorHomeScreen');
     } catch (error) {
-      console.error('Login failed:', error); 
+      toast.error('Login failed'); 
     }
   };
 
@@ -66,7 +66,7 @@ const DoctorLoginScreen: React.FC = () => {
 
         <Row className="py-3">
           <Col>
-            Don't have an account? <Link to="/doctor-register">Register</Link> 
+            Don't have an account? <Link to="/doctor/register">Register</Link> 
           </Col>
         </Row>
       </Form>

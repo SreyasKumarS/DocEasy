@@ -97,6 +97,8 @@ class DoctorService {
     const doctor = await DoctorRepository.findByEmail(email);
     if (!doctor) throw new Error('Invalid email or password');
 
+    if (!doctor.isApproved) throw new Error('Your account is not approved. Please contact support.');
+
     const isMatch = await bcrypt.compare(password, doctor.password);
     if (!isMatch) throw new Error('Invalid email or password');
 
