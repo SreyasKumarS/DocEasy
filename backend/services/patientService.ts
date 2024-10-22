@@ -1,4 +1,3 @@
-// services/patientService.ts
 import { Response, Request, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import sendEmail from '../utils/sendEmail.js';
@@ -12,10 +11,8 @@ class PatientService {
     if (existingPatient) {
       throw new Error('Email already registered');
     }
-
-    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); 
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -26,32 +23,26 @@ class PatientService {
       otp,
       otpExpires,
     };
-
     await PatientRepository.savePatient(newPatient);
-
-    // Send OTP via email
     await sendEmail(email, 'OTP Verification', `Your OTP is ${otp}`);
   }
 
+
   async verifyOtp(email: string, otp: string) {
-    const patient = await PatientRepository.findByEmail(email);
-    
+    const patient = await PatientRepository.findByEmail(email);  
     if (!patient) {
       throw new Error('Patient not found');
     }
-
     if (patient.otp !== otp) {
       throw new Error('Invalid OTP');
     }
-
     if (patient.otpExpires && patient.otpExpires < new Date()) {
       throw new Error('OTP expired');
     }
-
     patient.isVerified = true;
-
     await PatientRepository.updatePatient(patient);
   }
+
 
   async resendOtp(email: string) {
     const patient = await PatientRepository.findByEmail(email);
@@ -75,11 +66,11 @@ class PatientService {
 
   
 
-// PatientService.ts
+
 
 async loginPatient(email: string, password: string, res: Response): Promise<{
   patient: {
-      id: string; // This remains a string type
+      id: string; 
       name: string;
       email: string;
       isVerified: boolean;
@@ -93,45 +84,39 @@ async loginPatient(email: string, password: string, res: Response): Promise<{
   if (!isMatch) throw new Error('Invalid email or password');
 
   if (!patient.isVerified) throw new Error('Please verify your email before logging in.');
-
-  // Generate the token and set it as a cookie
-  const token = patientGenerateToken(res, patient._id.toString()); // Ensure patient._id is a string
+  const token = patientGenerateToken(res, patient._id.toString()); 
 
   return {
     patient: {
-      id: patient._id.toString(), // Convert ObjectId to string
+      id: patient._id.toString(), 
       name: patient.name,
       email: patient.email,
       isVerified: patient.isVerified,
     },
-    token, // Ensure this is returned
+    token,
   };
 }
 
+
 async logoutPatient(res: Response): Promise<void> {
-  res.clearCookie('token', { httpOnly: true, secure: true }); // Ensure this matches your environment (secure may be false in development)
+  res.clearCookie('token', { httpOnly: true, secure: true }); 
 }
 
 
 async sendResetOtp(email: string) {
   try {
-    const patient = await PatientRepository.findByEmail(email);
-    
+    const patient = await PatientRepository.findByEmail(email); 
     if (!patient) {
-      console.error('Patient not found for email:', email); // Log email for debugging
+      console.error('Patient not found for email:', email); 
       throw new Error('Patient not found');
     }
-
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     patient.otp = otp;
     patient.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-
-    await PatientRepository.updatePatient(patient);
-    
+    await PatientRepository.updatePatient(patient);  
     await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
-
   } catch (error) {
-    console.error('Error in sendResetOtp:', error); // Log full error for better insight
+    console.error('Error in sendResetOtp:', error); 
     throw new Error('Internal server error');
   }
 }
@@ -139,20 +124,16 @@ async sendResetOtp(email: string) {
 
 
 async resetPassword(email: string, newPassword: string): Promise<void> {
-  const patient = await PatientRepository.findByEmail(email); // Pass email directly
+  const patient = await PatientRepository.findByEmail(email); 
   if (!patient) {
     throw new Error('User not found');
   }
-
-  // Hash the new password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-  patient.password = hashedPassword; // Save hashed password
+  patient.password = hashedPassword; 
   await patient.save();
 }
-
-
 }
 
 export default new PatientService();

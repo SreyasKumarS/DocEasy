@@ -1,4 +1,3 @@
-// controllers/patientController.ts
 import PatientService from '../services/patientService.js';
 // Register Patient
 const registerPatient = async (req, res, next) => {
@@ -50,8 +49,8 @@ const loginPatient = async (req, res, next) => {
 // Logout Patient
 const logoutPatient = async (req, res, next) => {
     try {
-        await PatientService.logoutPatient(res); // This should handle clearing the cookie
-        return res.status(200).json({ message: 'Logout successful' }); // Ensure you're sending a JSON response
+        await PatientService.logoutPatient(res);
+        return res.status(200).json({ message: 'Logout successful' });
     }
     catch (error) {
         next(error);
@@ -64,9 +63,9 @@ const sendResetOtp = async (req, res, next) => {
         return res.status(200).json({ message: 'OTP sent to your email' });
     }
     catch (error) {
-        console.error('Error in resendOtp controller:', error); // Log the entire error object
+        console.error('Error in resendOtp controller:', error);
         if (error instanceof Error) {
-            console.error('Error message:', error.message); // Log specific error details
+            console.error('Error message:', error.message);
             return res.status(500).json({ message: error.message });
         }
         else {
@@ -75,14 +74,13 @@ const sendResetOtp = async (req, res, next) => {
         }
     }
 };
-// Reset Password (without OTP since it's already verified)
 const resetPassword = async (req, res, next) => {
     const { email, newPassword, confirmPassword } = req.body;
     if (newPassword !== confirmPassword) {
         return res.status(400).json({ message: 'Passwords do not match' });
     }
     try {
-        await PatientService.resetPassword(email, newPassword); // Update password only
+        await PatientService.resetPassword(email, newPassword);
         return res.status(200).json({ message: 'Password reset successful' });
     }
     catch (error) {

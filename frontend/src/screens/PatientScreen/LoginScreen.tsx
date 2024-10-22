@@ -2,28 +2,28 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/patientComponents/FormContainer";
-import { useLoginPatientMutation } from '../../slices/patientSlice/patientApiSlice'; // Import the login hook
+import { useLoginPatientMutation } from '../../slices/patientSlice/patientApiSlice'; 
 import { setCredentials } from "../../slices/patientSlice/patientAuthSlice";
-import { useDispatch } from 'react-redux'; // Import useDispatch to dispatch actions
+import { useDispatch } from 'react-redux'; 
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [loginPatient, { isLoading }] = useLoginPatientMutation(); // Use the login hook
-  const navigate = useNavigate(); // For navigation after successful login
+  const [loginPatient, { isLoading }] = useLoginPatientMutation(); 
+  const navigate = useNavigate(); 
   const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
     try {
-      const result = await loginPatient({ email, password }).unwrap(); // Call the login API
+      const result = await loginPatient({ email, password }).unwrap(); 
       dispatch(setCredentials(result)); 
       console.log('Login successful, received token:', result.token);
 
-      navigate('/'); // Adjust the route as necessary
+      navigate('/'); 
     } catch (error) {
-      console.error('Login failed:', error); // Handle the error appropriately
+      console.error('Login failed:', error); 
     }
   };
 
@@ -53,10 +53,9 @@ const LoginScreen: React.FC = () => {
           />
         </Form.Group>
 
-        {/* Forgot Password Link */}
         <Row className="py-3">
           <Col>
-            <Link to="/forgot-password">Forgot Password?</Link> {/* Add this link */}
+            <Link to="/forgot-password">Forgot Password?</Link> 
           </Col>
         </Row>
 

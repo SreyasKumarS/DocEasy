@@ -1,22 +1,20 @@
 import mongoose, { Schema } from 'mongoose';
-
-// Define the schema for the doctor with timestamps
 const doctorSchema = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    specialization: { type: String, required: true }, // Area of expertise
-    licenseNumber: { type: String, required: true, unique: true }, // Medical license number
+    specialization: { type: String, required: true }, 
+    licenseNumber: { type: String, required: true, unique: true }, 
     otp: { type: String },
     otpExpires: { type: Date },
     isVerified: { type: Boolean, default: false },
-    otherDetails: { type: String } // Add other fields as needed
+    medicalLicense: { type: String, required: true }, 
+    otherDetails: { type: String }
   },
-  { timestamps: true } // Enable timestamps
+  { timestamps: true } 
 );
 
-// Create the Doctor model based on the schema
 const Doctor = mongoose.model('Doctor', doctorSchema);
 
 export default Doctor;

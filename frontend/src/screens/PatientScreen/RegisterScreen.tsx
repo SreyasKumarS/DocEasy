@@ -21,12 +21,10 @@ const RegisterScreen: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // RTK Query Hooks
   const [registerPatient, { isLoading: isRegistering, error: registerError }] = useRegisterPatientMutation();
   const [verifyOtp, { isLoading: isVerifying, error: verifyError, isSuccess: otpVerified }] = useVerifyOtpMutation();
   const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
 
-  // Timer logic for OTP resend
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (isOtpSent && resendDisabled) {
@@ -45,7 +43,6 @@ const RegisterScreen: React.FC = () => {
     };
   }, [timer, isOtpSent, resendDisabled]);
 
-  // Form submission handler
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -73,7 +70,6 @@ const RegisterScreen: React.FC = () => {
     }
   };
 
-  // Resend OTP handler
   const resendOtpHandler = async () => {
     try {
       await resendOtp(email).unwrap();
@@ -84,7 +80,7 @@ const RegisterScreen: React.FC = () => {
     }
   };
 
-  // Handling success/failure notifications
+  
   useEffect(() => {
     if (otpVerified) {
       toast.success('Registration completed successfully!');

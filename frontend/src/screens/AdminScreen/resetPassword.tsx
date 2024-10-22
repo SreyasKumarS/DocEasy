@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { useResetAdminPasswordMutation } from '../../slices/adminSlice/adminApiSlice'; // API slice for admin password reset
-import FormContainer from '../../components/patientComponents/FormContainer'; // Use the admin-specific form container
+import { useResetAdminPasswordMutation } from '../../slices/adminSlice/adminApiSlice';
+import FormContainer from '../../components/patientComponents/FormContainer'; 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ResetAdminPasswordWithOtpScreen: React.FC = () => {
 
   const location = useLocation();
-  const { email } = location.state || {}; // Retrieve email from the location state
+  const { email } = location.state || {}; 
   
-  const [newPassword, setNewPassword] = useState<string>(''); // State for the new password
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // State for confirming the new password
-  const [resetAdminPasswordWithOtp, { isLoading }] = useResetAdminPasswordMutation(); // Admin password reset mutation
+  const [newPassword, setNewPassword] = useState<string>(''); 
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
+  const [resetAdminPasswordWithOtp, { isLoading }] = useResetAdminPasswordMutation(); 
   
   const navigate = useNavigate();
 
@@ -25,9 +25,9 @@ const ResetAdminPasswordWithOtpScreen: React.FC = () => {
     }
 
     try {
-      await resetAdminPasswordWithOtp({ email, newPassword, confirmPassword }).unwrap(); // Call admin password reset API
+      await resetAdminPasswordWithOtp({ email, newPassword, confirmPassword }).unwrap(); 
       toast.success('Password reset successfully!');
-      navigate('/admin/login'); // Redirect to admin login page after success
+      navigate('/admin/login'); 
     } catch (error) {
       console.error('Error resetting password:', error);
       toast.error('Failed to reset password. Please try again.');

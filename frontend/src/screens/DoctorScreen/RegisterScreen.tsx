@@ -17,7 +17,7 @@ const DoctorRegisterScreen: React.FC = () => {
   const [isOtpSent, setIsOtpSent] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(60);
   const [otpVerified, setOtpVerified] = useState<boolean>(false);
-
+  const [licenseFile, setLicenseFile] = useState<File | null>(null); 
 
   const navigate = useNavigate();
   const [registerDoctor] = useRegisterDoctorMutation();
@@ -44,7 +44,7 @@ const DoctorRegisterScreen: React.FC = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+    
     if (!isOtpSent) {
       if (password !== confirmPassword) {
         toast.error('Passwords do not match');
@@ -52,22 +52,33 @@ const DoctorRegisterScreen: React.FC = () => {
         toast.error('Please provide your specialization');
       } else if (!licenseNumber) {
         toast.error('Please provide your license number');
+      } else if (!licenseFile) {  
+        toast.error('Please upload your medical license certificate');
       } else {
+        
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('specialization', specialization);
+        formData.append('licenseNumber', licenseNumber);
+        formData.append('licenseFile', licenseFile); 
+
         try {
-          await registerDoctor({ name, email, password, specialization, licenseNumber }).unwrap();
+          await registerDoctor(formData).unwrap(); 
           toast.success('OTP sent successfully!');
           setIsOtpSent(true);
           setTimer(60);
           setResendDisabled(true);
-        } catch (error) {
-          toast.error('Doctor already exists! Try another email.');
+        } catch (error:any ) {
+          toast.error(error.message || error || 'Doctor already exists! Try another email.');
         }
       }
     } else if (isOtpSent && otp.trim() !== '') {
       try {
-        // Verify the OTP
+      
         await verifyOtp({ email, otp }).unwrap();
-        setOtpVerified(true); // Set otpVerified to true on success
+        setOtpVerified(true); 
         toast.success('OTP verified successfully!');
       } catch (error) {
         console.error('Error verifying OTP:', error); 
@@ -78,18 +89,17 @@ const DoctorRegisterScreen: React.FC = () => {
     }
   };
   
-  // Redirect to login page when OTP is successfully verified
+  
   useEffect(() => {
     if (otpVerified) {
       toast.success('Registration completed successfully!');
-      navigate('/doctor/login'); // Navigate to doctor login page
+      navigate('/doctor/login'); 
     }
   }, [otpVerified, navigate]);
-  
 
   const resendOtpHandler = async () => {
     try {
-      await resendOtp({ email }).unwrap();
+      await resendOtp(email).unwrap();
       setTimer(60);
       setResendDisabled(true);
     } catch (error) {
@@ -169,6 +179,18 @@ const DoctorRegisterScreen: React.FC = () => {
                 required
               />
             </Form.Group>
+            <Form.Group className="my-2" controlId='licenseFile'>
+              <Form.Label>Medical License Certificate</Form.Label>
+              <Form.Control
+                type="file"
+                name="licenseFile"
+                onChange={(e) => {
+                  const target = e.target as HTMLInputElement; 
+                  setLicenseFile(target.files ? target.files[0] : null);
+                }}
+                required
+                />
+            </Form.Group>
 
             <Button type="submit" variant="primary" className="mt-3">
               Send OTP
@@ -176,7 +198,7 @@ const DoctorRegisterScreen: React.FC = () => {
           </>
         ) : (
           <>
-            {/* OTP Form */}
+         
             <Form.Group className="my-2" controlId='otp'>
               <Form.Label>OTP</Form.Label>
               <Form.Control

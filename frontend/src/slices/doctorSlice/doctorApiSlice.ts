@@ -4,14 +4,13 @@ import { apiSlice } from '../apliSlice';
 const doctorUrl='api/doctor'
 export const doctorApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    registerDoctor: builder.mutation<void, { name: string; email: string; password: string; specialization:string; licenseNumber:string; }>({
-      query: (payload) => ({
-        url: `${doctorUrl}/register`,  // Adjust the URL path as necessary
+    registerDoctor: builder.mutation<void, FormData>({
+      query: (formData) => ({
+        url: `${doctorUrl}/register`,  
         method: 'POST',
-        body: payload,
+        body: formData,  
       }),
     }),
-    // Verify OTP
     verifyOtpDoctor: builder.mutation<void, { email: string; otp: string }>({
       query: ({ email, otp }) => ({
         url: `${doctorUrl}/verify-otpDoctor`,
@@ -19,17 +18,14 @@ export const doctorApi = apiSlice.injectEndpoints({
         body: { email, otp },
       }),
     }),
-    
-    // Resend OTP
-    resendOtp: builder.mutation<void, { email: string }>({
-      query: ({ email }) => ({
+    resendOtp: builder.mutation<void, string>({
+      query: (email) => ({
         url: `${doctorUrl}/resend-otp`,
         method: 'POST',
         body: { email },
       }),
     }),
     
-    // Login doctor
     loginDoctor: builder.mutation<{ token: string; doctor: any }, { email: string; password: string }>({
       query: (payload) => ({
         url: `${doctorUrl}/loginDoctor`, 
@@ -37,16 +33,12 @@ export const doctorApi = apiSlice.injectEndpoints({
         body: payload,
       }),
     }),
-    
-    // Logout doctor
     logoutDoctor: builder.mutation<void, void>({
       query: () => ({
         url: `${doctorUrl}/logout`, 
         method: 'POST',
       }),
     }),
-    
-    // Send Reset OTP
     sendDoctorResetOtp: builder.mutation<void, { email: string }>({
       query: ({ email }) => ({
         url: `${doctorUrl}/sendResetDoctorOtp`,
@@ -54,8 +46,6 @@ export const doctorApi = apiSlice.injectEndpoints({
         body: { email },
       }),
     }),
-    
-    // Reset Password
     resetDoctorPassword: builder.mutation<void, { email: string; newPassword: string; confirmPassword: string }>({
       query: ({ email, newPassword, confirmPassword }) => ({
         url: `${doctorUrl}/resetDoctorPassword`,  
@@ -67,7 +57,6 @@ export const doctorApi = apiSlice.injectEndpoints({
   }),
 });
 
-// Export hooks for each mutation
 export const { 
   useRegisterDoctorMutation,
   useVerifyOtpDoctorMutation, 

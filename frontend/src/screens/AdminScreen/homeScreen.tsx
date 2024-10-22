@@ -1,4 +1,3 @@
-// src/screens/AdminHomeScreen.tsx
 import React from 'react';
 
 const AdminHomeScreen: React.FC = () => {

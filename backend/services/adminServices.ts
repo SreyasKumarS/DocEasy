@@ -1,4 +1,3 @@
-// services/adminService.ts
 import { Response } from 'express';
 import bcrypt from 'bcryptjs';
 import sendEmail from '../utils/sendEmail.js';
@@ -7,7 +6,7 @@ import adminGenerateToken from '../utils/adminGenerateToken.js';
 import { log } from 'console';
 
 class AdminService {
-  // Verify OTP for admin
+
   async verifyOtp(email: string, otp: string) {
     console.log('reached service of verify otp')
     const admin = await AdminRepository.findByEmail(email);
@@ -28,7 +27,7 @@ class AdminService {
     await AdminRepository.updateAdmin(admin);
   }
 
-  // Resend OTP for admin
+ 
   async resendOtp(email: string) {
     const admin = await AdminRepository.findByEmail(email);
 
@@ -43,70 +42,54 @@ class AdminService {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     admin.otp = otp;
     admin.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-
     await AdminRepository.updateAdmin(admin);
-
-    // Resend OTP via email
     await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
   }
 
 
-
-
-  // Admin login
-  async loginAdmin(email: string, password: string, res: Response): Promise<{
-    admin: {
-      id: string;
-      email: string;
-      isVerified: boolean;
-    };
-    token: string;
-  }> {
-    try {
-      const admin = await AdminRepository.findByEmail(email);
-      if (!admin) {
-        console.error('Admin not found:', email);
-        throw new Error('Invalid email or password');
-      }
-  
-      const isMatch = await bcrypt.compare(password, admin.password);
-      if (!isMatch) {
-        console.error('Password mismatch for admin:', email);
-        throw new Error('Invalid email or password');
-      }
-  
-      if (!admin.isVerified) {
-        console.error('Admin is not verified:', email);
-        throw new Error('Please verify your email before logging in.');
-      }
-  
-      // Generate the token and set it as a cookie
-      const token = adminGenerateToken(res, admin._id.toString());
-  
-      return {
-        admin: {
-          id: admin._id.toString(),
-          email: admin.email,
-          isVerified: admin.isVerified,
-        },
-        token,
-      };
-    } catch (error) {
-      console.error('Error during admin login:', error); // Log the error
-      throw error; // Re-throw the error to be handled by your route
+async loginAdmin(email: string, password: string, res: Response): Promise<{
+  admin: {
+    id: string;
+    email: string;
+    isVerified: boolean;
+  };
+  token: string;
+}> {
+  try {
+    const admin = await AdminRepository.findByEmail(email);
+    if (!admin) {
+      console.error('Admin not found:', email);
+      throw new Error('Invalid email or password');
     }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      console.error('Password mismatch for admin:', email);
+      throw new Error('Invalid email or password');
+    }
+    if (!admin.isVerified) {
+      console.error('Admin is not verified:', email);
+      throw new Error('Please verify your email before logging in.');
+    }
+    const token = adminGenerateToken(res, admin._id.toString());
+      return {
+      admin: {
+        id: admin._id.toString(),
+        email: admin.email,
+        isVerified: admin.isVerified,
+      },
+      token,
+    };
+  } catch (error) {
+    console.error('Error during admin login:', error); 
+    throw error; 
   }
+}
 
-  
-
-
-
-  // Logout admin
   async logoutAdmin(res: Response): Promise<void> {
     res.clearCookie('token', { httpOnly: true, secure: true });
   }
 
-  // Send reset OTP for admin
   async sendResetOtp(email: string) {
     try {
       const admin = await AdminRepository.findByEmail(email);
@@ -116,10 +99,9 @@ class AdminService {
         throw new Error('Admin not found');
       }
 
-      // Generate OTP
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       admin.otp = otp;
-      admin.otpExpires = new Date(Date.now() + 10 * 60 * 1000); // Set OTP expiry
+      admin.otpExpires = new Date(Date.now() + 10 * 60 * 1000); 
 
       await AdminRepository.updateAdmin(admin);
       await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
@@ -129,7 +111,7 @@ class AdminService {
     }
   }
 
-  // Reset admin password
+  
   async resetPassword(email: string, newPassword: string): Promise<void> {
     try {
       const admin = await AdminRepository.findByEmail(email);
@@ -138,7 +120,7 @@ class AdminService {
         throw new Error('Admin not found');
       }
 
-      // Hash the new password
+   
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
 

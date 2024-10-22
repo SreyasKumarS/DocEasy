@@ -1,5 +1,4 @@
-// repositories/doctorRepository.ts
-import Doctor from '../models/doctor.js'; // Adjust the import path as needed
+import Doctor from '../models/doctor.js';
 class DoctorRepository {
     async findByEmail(email) {
         return Doctor.findOne({ email });
@@ -9,9 +8,8 @@ class DoctorRepository {
         return doctor.save();
     }
     async updateDoctor(doctor) {
-        return doctor.save(); // Save updated doctor details
+        return doctor.save();
     }
-    // Additional methods for doctor repository can be added as needed
     async findById(id) {
         return Doctor.findById(id);
     }

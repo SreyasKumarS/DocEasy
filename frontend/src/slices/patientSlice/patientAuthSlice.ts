@@ -19,7 +19,6 @@ const initialState: AuthState = {
     token: null,
 };
 
-// Create the authentication slice
 const authSlice = createSlice({
     name: 'PatientAuth',
     initialState,
@@ -30,19 +29,19 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.user = action.payload.patient;
             state.token = action.payload.token;
-            localStorage.setItem('token', action.payload.token); // Store the token in local storage
+            localStorage.setItem('token', action.payload.token); 
         },
         clearCredentials: (state) => {
             state.isAuthenticated = false;
             state.user = null;
             state.token = null;
-            localStorage.removeItem('token'); // Clear the token from local storage
+            localStorage.removeItem('token'); 
         },
     },
 });
 
-// Export the actions
+
 export const { setCredentials, clearCredentials } = authSlice.actions;
 
-// Export the reducer
+
 export default authSlice.reducer;

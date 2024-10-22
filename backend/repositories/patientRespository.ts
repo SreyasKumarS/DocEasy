@@ -1,5 +1,3 @@
-// repositories/patientRepository.ts
-
 import Patient from '../models/patient.js';
 
 class PatientRepository {

@@ -1,6 +1,3 @@
-// controllers/patientController.ts
-
-
 import { Response, Request, NextFunction } from 'express';
 
 import PatientService from '../services/patientService.js'
@@ -61,8 +58,8 @@ const loginPatient = async (req: Request, res: Response, next: NextFunction): Pr
 // Logout Patient
 const logoutPatient = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    await PatientService.logoutPatient(res);  // This should handle clearing the cookie
-    return res.status(200).json({ message: 'Logout successful' });  // Ensure you're sending a JSON response
+    await PatientService.logoutPatient(res);  
+    return res.status(200).json({ message: 'Logout successful' });  
   } catch (error) {
     next(error);
   }
@@ -76,9 +73,9 @@ const sendResetOtp = async (req: Request, res: Response, next: NextFunction): Pr
     await PatientService.sendResetOtp(email);
     return res.status(200).json({ message: 'OTP sent to your email' });
   } catch (error) {
-    console.error('Error in resendOtp controller:', error); // Log the entire error object
+    console.error('Error in resendOtp controller:', error); 
     if (error instanceof Error) {
-        console.error('Error message:', error.message); // Log specific error details
+        console.error('Error message:', error.message); 
         return res.status(500).json({ message: error.message });
     } else {
         console.error('Unknown error in resendOtp controller:', error);
@@ -87,7 +84,7 @@ const sendResetOtp = async (req: Request, res: Response, next: NextFunction): Pr
 };
 
 
-// Reset Password (without OTP since it's already verified)
+
 const resetPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { email, newPassword, confirmPassword } = req.body;
 
@@ -96,7 +93,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction): P
   }
 
   try {
-    await PatientService.resetPassword(email, newPassword); // Update password only
+    await PatientService.resetPassword(email, newPassword);
     return res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
     console.error('Error resetting password:', error);

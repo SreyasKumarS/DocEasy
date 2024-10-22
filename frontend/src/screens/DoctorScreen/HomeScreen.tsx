@@ -1,4 +1,3 @@
-// src/screens/DoctorHomeScreen.jsx
 import React from 'react';
 
 const DoctorHomeScreen: React.FC = () => {

@@ -4,7 +4,7 @@ const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGO_URI;
     
-    // Check if MONGO_URI is defined
+    
     if (!mongoURI) {
       throw new Error('MONGO_URI is not defined in environment variables');
     }
@@ -13,9 +13,9 @@ const connectDB = async () => {
     console.log(`Database connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
-    process.exit(1); // Exit with failure
+    process.exit(1); 
   }
 };
 
-// Default export for ES modules
+
 export default connectDB;

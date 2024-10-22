@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useResetPasswordMutation} from '../../slices/patientSlice/patientApiSlice'; 
 import FormContainer from '../../components/patientComponents/FormContainer';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ResetPasswordWithOtpScreen: React.FC = () => {
@@ -10,11 +10,11 @@ const ResetPasswordWithOtpScreen: React.FC = () => {
   const location = useLocation();
   const { email } = location.state || {};
   
-  const [newPassword, setNewPassword] = useState<string>(''); // New password entered by the user
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // Password confirmation
+  const [newPassword, setNewPassword] = useState<string>(''); 
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
   const [resetPasswordWithOtp, { isLoading }] = useResetPasswordMutation();
   
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

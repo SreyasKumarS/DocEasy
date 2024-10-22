@@ -1,4 +1,3 @@
-// routes/patientRoutes.ts
 import { Router } from 'express';
 import { registerPatient, verifyOtp, resendOtp, loginPatient, logoutPatient, sendResetOtp, resetPassword } from '../controllers/patientController.js';
 const router = Router();

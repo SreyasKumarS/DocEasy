@@ -55,12 +55,12 @@ const logoutAdmin = async (req: Request, res: Response, next: NextFunction): Pro
 const sendAdminResetOtp = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { email } = req.body;
   try {
-    await AdminService.sendResetOtp(email); // Call the AdminService to send OTP
+    await AdminService.sendResetOtp(email); 
     return res.status(200).json({ message: 'OTP sent to your email' });
   } catch (error) {
-    console.error('Error in sendAdminResetOtp controller:', error); // Log the entire error object
+    console.error('Error in sendAdminResetOtp controller:', error); 
     if (error instanceof Error) {
-      console.error('Error message:', error.message); // Log specific error details
+      console.error('Error message:', error.message); 
       return res.status(500).json({ message: error.message });
     } else {
       console.error('Unknown error in sendAdminResetOtp controller:', error);
@@ -73,18 +73,18 @@ const sendAdminResetOtp = async (req: Request, res: Response, next: NextFunction
 const resetAdminPassword = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { email, newPassword, confirmPassword } = req.body;
 
-  // Check if passwords match
+ 
   if (newPassword !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match' });
   }
 
   try {
-    // Update the admin's password using AdminService
+    
     await AdminService.resetPassword(email, newPassword);
     return res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
-    console.error('Error resetting admin password:', error); // Log the error for debugging
-    next(error); // Pass the error to the global error handler
+    console.error('Error resetting admin password:', error); 
+    next(error); 
   }
 };
 

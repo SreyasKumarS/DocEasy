@@ -3,36 +3,28 @@ import sendEmail from '../utils/sendEmail.js';
 import DoctorRepository from '../repositories/doctorRespository.js';
 import doctorGenerateToken from '../utils/doctorGenerateToken.js';
 class DoctorService {
-    // Register doctor with medical certificate upload
-    async registerDoctor(name, email, password, specialization, // Specialization field included
-    licenseNumber) {
-        // Check if the doctor already exists based on the provided email
+    async registerDoctor(name, email, password, specialization, licenseNumber, medicalLicense) {
         const existingDoctor = await DoctorRepository.findByEmail(email);
         if (existingDoctor) {
             throw new Error('Email already registered');
         }
-        // Generate OTP and expiry time (10-minute window)
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
-        // Hash the password before saving to the database
+        const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
         const hashedPassword = await bcrypt.hash(password, 10);
-        // Create the new doctor object
         const newDoctor = {
             name,
             email,
             password: hashedPassword,
             otp,
             otpExpires,
-            specialization, // Save specialization field
-            licenseNumber, // Save license number
-            isVerified: false // Email verification pending
+            specialization,
+            licenseNumber,
+            medicalLicense,
+            isVerified: false
         };
-        // Persist the new doctor to the database
         await DoctorRepository.saveDoctor(newDoctor);
-        // Send OTP for email verification
         await sendEmail(email, 'OTP Verification', `Your OTP is ${otp}`);
     }
-    // Verify OTP for doctor
     async verifyOtp(email, otp) {
         const doctor = await DoctorRepository.findByEmail(email);
         if (!doctor) {
@@ -47,8 +39,8 @@ class DoctorService {
         doctor.isVerified = true;
         await DoctorRepository.updateDoctor(doctor);
     }
-    // Resend OTP for doctor
     async resendOtp(email) {
+        console.log('entered doc service otp area');
         const doctor = await DoctorRepository.findByEmail(email);
         if (!doctor) {
             throw new Error('Doctor not found');
@@ -60,10 +52,8 @@ class DoctorService {
         doctor.otp = otp;
         doctor.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
         await DoctorRepository.updateDoctor(doctor);
-        // Resend OTP via email
         await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
     }
-    // Doctor login
     async loginDoctor(email, password, res) {
         console.log('eneter dc service');
         const doctor = await DoctorRepository.findByEmail(email);
@@ -74,57 +64,51 @@ class DoctorService {
             throw new Error('Invalid email or password');
         if (!doctor.isVerified)
             throw new Error('Please verify your email before logging in.');
-        // Generate the token and set it as a cookie
         const token = doctorGenerateToken(res, doctor._id.toString());
         return {
             doctor: {
                 id: doctor._id.toString(),
                 name: doctor.name,
                 email: doctor.email,
-                isVerified: doctor.isVerified, // Include medical certificate path
+                isVerified: doctor.isVerified,
             },
-            token, // Ensure this is returned
+            token,
         };
     }
-    // Logout doctor
     async logoutDoctor(res) {
         res.clearCookie('token', { httpOnly: true, secure: true });
     }
-    // Send reset OTP for doctor
     async sendResetOtp(email) {
         try {
-            const doctor = await DoctorRepository.findByEmail(email); // Use DoctorRepository for doctors
+            const doctor = await DoctorRepository.findByEmail(email);
             if (!doctor) {
-                console.error('Doctor not found for email:', email); // Log email for debugging
+                console.error('Doctor not found for email:', email);
                 throw new Error('Doctor not found');
             }
-            // Generate OTP
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
             doctor.otp = otp;
-            doctor.otpExpires = new Date(Date.now() + 10 * 60 * 1000); // Set OTP expiry
-            await DoctorRepository.updateDoctor(doctor); // Update doctor details
-            await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`); // Send OTP email
+            doctor.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
+            await DoctorRepository.updateDoctor(doctor);
+            await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
         }
         catch (error) {
-            console.error('Error in sendResetOtp for doctor:', error); // Log full error for better insight
+            console.error('Error in sendResetOtp for doctor:', error);
             throw new Error('Internal server error');
         }
     }
-    // Reset doctor password
     async resetPassword(email, newPassword) {
         try {
-            const doctor = await DoctorRepository.findByEmail(email); // Use DoctorRepository for doctors
+            const doctor = await DoctorRepository.findByEmail(email);
             if (!doctor) {
                 throw new Error('Doctor not found');
             }
-            // Hash the new password
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(newPassword, salt);
-            doctor.password = hashedPassword; // Save hashed password
-            await doctor.save(); // Save updated doctor details
+            doctor.password = hashedPassword;
+            await doctor.save();
         }
         catch (error) {
-            console.error('Error in resetPassword for doctor:', error); // Log error for debugging
+            console.error('Error in resetPassword for doctor:', error);
             throw new Error('Internal server error');
         }
     }

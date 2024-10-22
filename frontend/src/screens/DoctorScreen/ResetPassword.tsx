@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { useResetDoctorPasswordMutation } from '../../slices/doctorSlice/doctorApiSlice'; // API slice for doctor password reset
-import FormContainer from '../../components/patientComponents/FormContainer'; // Use the doctor-specific form container
+import { useResetDoctorPasswordMutation } from '../../slices/doctorSlice/doctorApiSlice'; 
+import FormContainer from '../../components/patientComponents/FormContainer'; 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ResetDoctorPasswordWithOtpScreen: React.FC = () => {
 
   const location = useLocation();
-  const { email } = location.state || {}; // Retrieve email from the location state
+  const { email } = location.state || {};
   
-  const [newPassword, setNewPassword] = useState<string>(''); // State for the new password
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // State for confirming the new password
-  const [resetDoctorPasswordWithOtp, { isLoading }] = useResetDoctorPasswordMutation(); // Doctor password reset mutation
+  const [newPassword, setNewPassword] = useState<string>(''); 
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); 
+  const [resetDoctorPasswordWithOtp, { isLoading }] = useResetDoctorPasswordMutation(); 
   
   const navigate = useNavigate();
 
@@ -25,9 +25,9 @@ const ResetDoctorPasswordWithOtpScreen: React.FC = () => {
     }
 
     try {
-      await resetDoctorPasswordWithOtp({ email, newPassword,confirmPassword }).unwrap(); // Call doctor password reset API
+      await resetDoctorPasswordWithOtp({ email, newPassword,confirmPassword }).unwrap(); 
       toast.success('Password reset successfully!');
-      navigate('/doctor/login'); // Redirect to doctor login page after success
+      navigate('/doctor/login'); 
     } catch (error) {
       console.error('Error resetting password:', error);
       toast.error('Failed to reset password. Please try again.');

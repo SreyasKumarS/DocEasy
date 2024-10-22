@@ -4,8 +4,6 @@ import { Container, Row, Col } from 'react-bootstrap'; // Ensure react-bootstrap
 interface FormContainerProps {
   children: React.ReactNode;
 }
-
-// FC (FunctionComponent) is shorthand for typing functional components
 const FormContainer: React.FC<FormContainerProps> = ({ children }) => {
   return (
     <Container>

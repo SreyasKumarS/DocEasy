@@ -8,9 +8,8 @@ class PatientService {
         if (existingPatient) {
             throw new Error('Email already registered');
         }
-        // Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
         const hashedPassword = await bcrypt.hash(password, 10);
         const newPatient = {
             name,
@@ -20,7 +19,6 @@ class PatientService {
             otpExpires,
         };
         await PatientRepository.savePatient(newPatient);
-        // Send OTP via email
         await sendEmail(email, 'OTP Verification', `Your OTP is ${otp}`);
     }
     async verifyOtp(email, otp) {
@@ -51,7 +49,6 @@ class PatientService {
         await PatientRepository.updatePatient(patient);
         await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
     }
-    // PatientService.ts
     async loginPatient(email, password, res) {
         const patient = await PatientRepository.findByEmail(email);
         if (!patient)
@@ -61,26 +58,25 @@ class PatientService {
             throw new Error('Invalid email or password');
         if (!patient.isVerified)
             throw new Error('Please verify your email before logging in.');
-        // Generate the token and set it as a cookie
-        const token = patientGenerateToken(res, patient._id.toString()); // Ensure patient._id is a string
+        const token = patientGenerateToken(res, patient._id.toString());
         return {
             patient: {
-                id: patient._id.toString(), // Convert ObjectId to string
+                id: patient._id.toString(),
                 name: patient.name,
                 email: patient.email,
                 isVerified: patient.isVerified,
             },
-            token, // Ensure this is returned
+            token,
         };
     }
     async logoutPatient(res) {
-        res.clearCookie('token', { httpOnly: true, secure: true }); // Ensure this matches your environment (secure may be false in development)
+        res.clearCookie('token', { httpOnly: true, secure: true });
     }
     async sendResetOtp(email) {
         try {
             const patient = await PatientRepository.findByEmail(email);
             if (!patient) {
-                console.error('Patient not found for email:', email); // Log email for debugging
+                console.error('Patient not found for email:', email);
                 throw new Error('Patient not found');
             }
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -90,19 +86,18 @@ class PatientService {
             await sendEmail(email, 'OTP Verification', `Your new OTP is ${otp}`);
         }
         catch (error) {
-            console.error('Error in sendResetOtp:', error); // Log full error for better insight
+            console.error('Error in sendResetOtp:', error);
             throw new Error('Internal server error');
         }
     }
     async resetPassword(email, newPassword) {
-        const patient = await PatientRepository.findByEmail(email); // Pass email directly
+        const patient = await PatientRepository.findByEmail(email);
         if (!patient) {
             throw new Error('User not found');
         }
-        // Hash the new password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
-        patient.password = hashedPassword; // Save hashed password
+        patient.password = hashedPassword;
         await patient.save();
     }
 }

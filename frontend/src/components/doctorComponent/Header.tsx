@@ -15,7 +15,6 @@ const DoctorHeader = () => {
   const isAuthenticated = useSelector((state: RootState) => state.DoctorAuth.isAuthenticated);
   const user = useSelector((state: RootState) => state.DoctorAuth.user);
 
-  // Handle doctor logout
   const handleLogout = async () => {
     try {
       await logoutDoctor().unwrap();
@@ -30,7 +29,7 @@ const DoctorHeader = () => {
     <nav
       className="navbar navbar-expand-lg"
       style={{
-        backgroundColor: '#28a745', // New green color for doctor header
+        backgroundColor: '#28a745', 
         padding: '10px 50px',
         fontFamily: "'Poppins', sans-serif",
       }}

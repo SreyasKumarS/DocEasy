@@ -9,18 +9,17 @@ import { RootState } from '../../../store';
 
 const AdminHeader = () => {
   const dispatch = useDispatch();
-  const [logoutAdmin] = useLogoutAdminMutation(); // Admin logout mutation
+  const [logoutAdmin] = useLogoutAdminMutation();
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector((state: RootState) => state.AdminAuth.isAuthenticated);
   const user = useSelector((state: RootState) => state.AdminAuth.user);
 
-  // Handle admin logout
   const handleLogout = async () => {
     try {
       await logoutAdmin().unwrap();
       dispatch(clearCredentials());
-      navigate('/admin/login'); // Redirect to admin login after logout
+      navigate('/admin/login'); 
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -30,7 +29,7 @@ const AdminHeader = () => {
     <nav
       className="navbar navbar-expand-lg"
       style={{
-        backgroundColor: '#ffc107', // Yellow color for admin header
+        backgroundColor: '#ffc107', 
         padding: '10px 50px',
         fontFamily: "'Poppins', sans-serif",
       }}

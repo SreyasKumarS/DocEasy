@@ -56,7 +56,7 @@ const DoctorLoginScreen: React.FC = () => {
 
         <Row className="py-3">
           <Col>
-            <Link to="/doctor/DoctorForgotPasswordScreen">Forgot Password?</Link> {/* Adjust link */}
+            <Link to="/doctor/DoctorForgotPasswordScreen">Forgot Password?</Link> 
           </Col>
         </Row>
 
@@ -66,7 +66,7 @@ const DoctorLoginScreen: React.FC = () => {
 
         <Row className="py-3">
           <Col>
-            Don't have an account? <Link to="/doctor-register">Register</Link> {/* Adjust link */}
+            Don't have an account? <Link to="/doctor-register">Register</Link> 
           </Col>
         </Row>
       </Form>

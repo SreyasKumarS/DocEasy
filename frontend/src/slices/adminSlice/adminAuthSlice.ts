@@ -18,7 +18,6 @@ const initialState: AuthState = {
     token: null,
 };
 
-// Create the authentication slice for admin
 const authSlice = createSlice({
     name: 'AdminAuth',
     initialState,
@@ -27,21 +26,21 @@ const authSlice = createSlice({
             console.log("Payload received in setCredentials:", action.payload);
 
             state.isAuthenticated = true;
-            state.user = action.payload.admin; // Store admin details
+            state.user = action.payload.admin; 
             state.token = action.payload.token;
-            localStorage.setItem('token', action.payload.token); // Store the token in local storage
+            localStorage.setItem('token', action.payload.token); 
         },
         clearCredentials: (state) => {
             state.isAuthenticated = false;
             state.user = null;
             state.token = null;
-            localStorage.removeItem('token'); // Clear the token from local storage
+            localStorage.removeItem('token'); 
         },
     },
 });
 
-// Export the actions
+
 export const { setCredentials, clearCredentials } = authSlice.actions;
 
-// Export the reducer
+
 export default authSlice.reducer;

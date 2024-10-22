@@ -1,14 +1,11 @@
-// api/patientApi.ts
-
 import { apiSlice } from '../apliSlice';  
 const patientUrl='api/patients'
 
-// Extend the reusable apiSlice to add patient-specific endpoints
 export const patientApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerPatient: builder.mutation<void, { name: string; email: string; password: string }>({
       query: (payload) => ({
-        url: `${patientUrl}/register`,  // Adjust the URL path as necessary
+        url: `${patientUrl}/register`,  
         method: 'POST',
         body: payload,
       }),
@@ -29,14 +26,14 @@ export const patientApi = apiSlice.injectEndpoints({
     }),
     loginPatient: builder.mutation<{ token: string; patient: any }, { email: string; password: string }>({
       query: (payload) => ({
-        url: `${patientUrl}/login`, // Adjust the URL path as necessary
+        url: `${patientUrl}/login`, 
         method: 'POST',
         body: payload,
       }),
     }),
     logoutPatient: builder.mutation<void, void>({
       query: () => ({
-        url: `${patientUrl}/logout`, // Adjust this endpoint to match your backend
+        url: `${patientUrl}/logout`, 
         method: 'POST',
       }),
     }),
@@ -46,21 +43,20 @@ export const patientApi = apiSlice.injectEndpoints({
         return {
           url: `${patientUrl}/sendResetOtp`,
           method: 'POST',
-          body: { email }, // Ensure you send an object containing the email
+          body: { email }, 
         };
       },
     }),
     resetPassword: builder.mutation<void, { email: string; newPassword: string; confirmPassword: string }>({
       query: ({ email, newPassword, confirmPassword }) => ({
-        url: `${patientUrl}/resetPassword`,  // The backend endpoint for resetting the password
+        url: `${patientUrl}/resetPassword`,  
         method: 'POST',
-        body: { email, newPassword, confirmPassword }, // Pass both email and the new password in the body
+        body: { email, newPassword, confirmPassword }, 
       }),
     }),
     
   }),
 });
-
 
 
 

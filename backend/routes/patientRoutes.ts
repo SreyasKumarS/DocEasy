@@ -1,4 +1,3 @@
-// routes/patientRoutes.ts
 import { Router } from 'express';
 import {
     registerPatient,
@@ -10,7 +9,7 @@ import {
     resetPassword
    
 } from '../controllers/patientController.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+
 
 const router = Router();
 router.post('/register', registerPatient);

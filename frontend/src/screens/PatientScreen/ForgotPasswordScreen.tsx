@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useSendResetOtpMutation,useVerifyOtpMutation } from '../../slices/patientSlice/patientApiSlice'; // API call to request OTP
+import { useSendResetOtpMutation,useVerifyOtpMutation } from '../../slices/patientSlice/patientApiSlice';
 import FormContainer from '../../components/patientComponents/FormContainer';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const RequestOtpScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
-  const [otp, setOtp] = useState<string>(''); // State for OTP input
-  const [otpSent, setOtpSent] = useState<boolean>(false); // Track if OTP is sent
-  const [isVerifying, setIsVerifying] = useState<boolean>(false); // OTP verification state
-  const [resendDisabled, setResendDisabled] = useState<boolean>(true); // Disable resend button
-  const [timer, setTimer] = useState<number>(60); // Timer for resending OTP
-  const [isResending, setIsResending] = useState<boolean>(false); // Resending state
-  let interval: NodeJS.Timeout; // Timer interval
+  const [otp, setOtp] = useState<string>(''); 
+  const [otpSent, setOtpSent] = useState<boolean>(false); 
+  const [isVerifying, setIsVerifying] = useState<boolean>(false); 
+  const [resendDisabled, setResendDisabled] = useState<boolean>(true); 
+  const [timer, setTimer] = useState<number>(60); 
+  const [isResending, setIsResending] = useState<boolean>(false); 
+  let interval: NodeJS.Timeout; 
 
   const [sendResetOtp, { isLoading }] = useSendResetOtpMutation();
   const [verifyOtp]=useVerifyOtpMutation()
@@ -25,15 +25,13 @@ const RequestOtpScreen: React.FC = () => {
         setTimer((prev) => {
           if (prev === 1) {
             clearInterval(interval);
-            setResendDisabled(false); // Enable the resend button after time elapses
+            setResendDisabled(false); 
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
     }
-
-    // Cleanup the timer on component unmount
     return () => clearInterval(interval);
   }, [otpSent, resendDisabled]);
 
@@ -42,9 +40,9 @@ const RequestOtpScreen: React.FC = () => {
     try {
       await sendResetOtp(email).unwrap();
       toast.success('OTP sent to your email');
-      setOtpSent(true); // Set OTP sent status to true
-      setResendDisabled(true); // Disable resend button initially
-      setTimer(60); // Reset timer
+      setOtpSent(true); 
+      setResendDisabled(true); 
+      setTimer(60); 
     } catch (error) {
       console.error('Error sending OTP:', error);
     }
@@ -56,8 +54,8 @@ const RequestOtpScreen: React.FC = () => {
       await sendResetOtp(email).unwrap();
       toast.success('OTP resent');
       setIsResending(false);
-      setResendDisabled(true); // Disable resend button
-      setTimer(60); // Reset timer
+      setResendDisabled(true);
+      setTimer(60); 
     } catch (error) {
       console.error('Error resending OTP:', error);
       setIsResending(false);
@@ -68,7 +66,6 @@ const RequestOtpScreen: React.FC = () => {
     e.preventDefault();
     setIsVerifying(true);
     try {
-      // Call the verifyOtp API and send email and otp for verification
       await verifyOtp({email, otp }).unwrap();
       toast.success('OTP Verified Successfully!');
       navigate('/resetPassword', { state: { email } });

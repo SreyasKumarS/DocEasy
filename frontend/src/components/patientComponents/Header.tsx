@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutPatientMutation } from '../../slices/patientSlice/patientApiSlice';
-import { clearCredentials } from '../../slices/patientSlice/patientAuthSlice'; // Ensure correct import for clearing credentials
-import { useNavigate } from 'react-router-dom'; // For redirecting user after logout if needed
+import { clearCredentials } from '../../slices/patientSlice/patientAuthSlice'; 
+import { useNavigate } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { RootState } from '../../../store'; // Import the RootState type
+import { RootState } from '../../../store'; 
 
 const Header = () => {
   const dispatch = useDispatch();
