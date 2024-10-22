@@ -1,19 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js'; // Import connectDB (default export)
-import patientRoutes from './routes/patientRoutes.js'; // Include .js for ES modules
+import connectDB from './config/db.js';
+import patientRoutes from './routes/patientRoutes.js';
+import doctorRoutes from './routes/doctorRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-// Load environment variables from .env file
+import path from 'path';
 dotenv.config();
-// Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-// Create express app
+const _dirname = path.dirname(__filename);
 const app = express();
-// Connect to MongoDB
-connectDB(); // Connect to the database after loading env variables
+connectDB();
 app.use(cors());
 // Middleware to parse JSON
 app.use(express.json());
@@ -23,6 +21,9 @@ app.get('/', (req, res) => {
 });
 // Use patient routes for handling patient-related API endpoints
 app.use('/api/patients', patientRoutes);
+app.use('/api/doctor', doctorRoutes);
+app.use('/api/admin', adminRoutes);
+app.use(express.static(path.join(_dirname, 'public')));
 // Error handling middleware
 app.use((err, req, res, next) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;

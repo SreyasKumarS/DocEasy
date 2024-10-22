@@ -15,7 +15,8 @@
   "models/**/*.ts",
   "repositories/**/*.ts",  // Include repositories
   "server.ts",
-  "services.ts"
+  "services.ts",
+  "config.ts"
   ], // Include these directories for compilation
   "exclude": ["node_modules"]                         // Exclude node_modules
 }

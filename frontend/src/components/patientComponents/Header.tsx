@@ -98,8 +98,8 @@ const Header = () => {
                   >
                     Signup
                   </a>
-                  <ul className="dropdown-menu" aria-labelledby="signupDropdown">
-                    <li><a className="dropdown-item" href="/signup/doctor">As Doctor</a></li>
+                  <ul className="dropdown-menu" aria-labelledby="register">
+                    <li><a className="dropdown-item" href="/doctor/register">As Doctor</a></li>
                     <li><a className="dropdown-item" href="/register">As Patient</a></li>
                   </ul>
                 </li>

@@ -1,19 +1,22 @@
-// frontend/store.ts
+// store.js (or wherever you configure your Redux store)
+
 import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { patientApi } from './src/slices/patientSlice/patientApiSlice'; // Adjust the import path as necessary
-import authReducer from './src/slices/patientSlice/patientAuthSlice'; // Ensure this path is correct
+import { apiSlice } from '../frontend/src/slices/apliSlice'; // Adjust the path as necessary
+import patientReducer from '../frontend/src/slices/patientSlice/patientAuthSlice';
+import doctorReducer from '../frontend/src/slices/doctorSlice/doctorAuthSlice';
+import adminReducer from '../frontend/src/slices/adminSlice/adminAuthSlice';
 
 const store = configureStore({
   reducer: {
-    PatientAuth: authReducer, // Ensure you have this line to include the auth reducer
-    [patientApi.reducerPath]: patientApi.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer, 
+    PatientAuth: patientReducer,                   
+    DoctorAuth: doctorReducer,
+    AdminAuth: adminReducer                   
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(patientApi.middleware),
+    getDefaultMiddleware().concat(apiSlice.middleware), 
 });
 
-setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export default store;

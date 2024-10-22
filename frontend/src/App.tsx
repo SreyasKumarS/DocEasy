@@ -1,30 +1,34 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/patientComponents/Header";
+import Headerd from "./components/doctorComponent/Header";
+import Headera from "./components/adminComponent/Header"; // Corrected import name for admin header
 import './App.css';
-
-// Import ToastContainer from react-toastify
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toastify
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const App: React.FC = () => {
+  const location = useLocation(); 
+
+  const isDoctorRoute = location.pathname.startsWith('/doctor');
+  const isAdminRoute = location.pathname.startsWith('/admin'); // Check if the route is for admin
+
   return (
     <>
-      <Header />
+      {isAdminRoute ? <Headera /> : isDoctorRoute ? <Headerd /> : <Header />}
       <Outlet />
 
-      {/* ToastContainer to display toast notifications */}
       <ToastContainer 
-        position="top-right" // You can adjust the position
-        autoClose={3000} // Auto close after 3 seconds
-        hideProgressBar={false} // Show progress bar
-        newestOnTop={false} // Notifications stacking
-        closeOnClick // Close on click
-        rtl={false} // Left to right display
-        pauseOnFocusLoss // Pause toast when window loses focus
-        draggable // Allow dragging
-        pauseOnHover // Pause on hover
-        theme="colored" // Optional themes: colored, dark, light
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+        theme="colored" 
       />
     </>
   );

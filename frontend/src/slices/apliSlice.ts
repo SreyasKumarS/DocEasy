@@ -1,12 +1,27 @@
 // src/redux/slices/apiSlice.ts
+// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+// const baseQuery = fetchBaseQuery({
+//   baseUrl: 'http://localhost:5000',
+// });
+
+// export const apiSlice = createApi({
+//   baseQuery,
+//   tagTypes: ['User'],
+//   endpoints: (builder) => ({}),
+// });
+
+
+
+// src/redux/slices/apiSlice.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/api/patients',
+  baseUrl: 'http://localhost:5000',
 });
 
 export const apiSlice = createApi({
   baseQuery,
   tagTypes: ['User'],
-  endpoints: (builder) => ({}),
+  endpoints: (builder) => ({}), // Base slice, no endpoints defined here
 });

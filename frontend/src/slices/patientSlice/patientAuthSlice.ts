@@ -19,10 +19,6 @@ const initialState: AuthState = {
     token: null,
 };
 
-
-
-
-
 // Create the authentication slice
 const authSlice = createSlice({
     name: 'PatientAuth',
