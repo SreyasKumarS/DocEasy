@@ -1,25 +1,35 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-
-interface CustomRequest extends Request {
-  user?: any; 
+// Extending the Request type to include adminId
+interface AuthenticatedRequest extends Request {
+    adminId?: string; // optional property for admin ID
 }
 
-const authMiddleware = (req: CustomRequest, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
+const authenticateAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const token = req.cookies.userJwt; // Extract the token from cookies
+    console.log(token,'tokeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
 
-  if (!token) {
-    return res.status(403).json({ message: 'Access denied. No token provided.' });
-  }
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    req.user = decoded; 
-    next();
-  } catch (error) {
-    return res.status(400).json({ message: 'Invalid token.' });
-  }
+    // Use jwt.verify with the appropriate callback signature
+    jwt.verify(token, process.env.JWT_SECRET as string, (err: unknown, decoded: unknown) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+        
+        // Cast decoded to JwtPayload
+        const payload = decoded as JwtPayload;
+
+        // Ensure the userId is available
+        if (payload && typeof payload.userId === 'string') {
+            req.adminId = payload.userId; // Attach the admin ID to the request object
+        }
+        
+        next();
+    });
 };
 
-export default authMiddleware;
+export default authenticateAdmin;

@@ -22,18 +22,13 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, action) => {
-            console.log("Payload received in setCredentials:", action.payload);
-
             state.isAuthenticated = true;
             state.user = action.payload.doctor; 
-            state.token = action.payload.token;
-            localStorage.setItem('token', action.payload.token); 
+            
         },
         clearCredentials: (state) => {
             state.isAuthenticated = false;
-            state.user = null;
-            state.token = null;
-            localStorage.removeItem('token'); 
+            state.user = null;       
         },
     },
 });

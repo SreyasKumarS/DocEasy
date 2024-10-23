@@ -25,14 +25,13 @@ const resendOtp = async (req, res, next) => {
 };
 // Login Admin
 const loginAdmin = async (req, res, next) => {
-    console.log('controller hit');
     const { email, password } = req.body;
     try {
         const result = await AdminService.loginAdmin(email, password, res);
         return res.status(200).json({
             message: 'Login successful',
-            token: result.token,
             admin: result.admin,
+            token: result.token, // Include the token in the response if needed
         });
     }
     catch (error) {
@@ -97,6 +96,7 @@ const fetchUnapprovedDoctors = async (req, res, next) => {
 };
 // Approve a doctor
 const approveDoctor = async (req, res, next) => {
+    console.log('unporovedddddddddddddddddddddddddd');
     const { doctorId } = req.params;
     try {
         await AdminService.approveDoctor(doctorId); // Approve doctor in the service

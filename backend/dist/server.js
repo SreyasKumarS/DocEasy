@@ -9,10 +9,15 @@ import connectDB from './config/db.js';
 import patientRoutes from './routes/patientRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 connectDB();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // replace with your frontend URL
+    credentials: true,
+}));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/patients', patientRoutes);

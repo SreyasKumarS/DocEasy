@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/patientComponents/FormContainer"; 
 import { useLoginAdminMutation } from '../../slices/adminSlice/adminApiSlice'; 
 import { setCredentials } from "../../slices/adminSlice/adminAuthSlice"; 
-import { useDispatch } from 'react-redux'; 
+import { useDispatch,useSelector } from 'react-redux'; 
+import { RootState } from '../../../store';
 
 const AdminLoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -13,12 +14,25 @@ const AdminLoginScreen: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+
+  const user = useSelector((state: RootState) => state.AdminAuth.user);
+
+  // Redirect if already logged in (adminInfo/token exists)
+  useEffect(() => {
+    if (user) {
+      navigate('/admin/adminHomeScreen');
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 
 
     try {
       const result = await loginAdmin({ email, password }).unwrap();
-      dispatch(setCredentials(result));  
+      dispatch(setCredentials({
+        admin: result.admin, // Ensure this is correctly structured in your API response
+        token: result.token,  // Ensure the token is included in the response
+    })); 
       console.log('Admin login successful, received token:', result.token);
       navigate('/admin/adminHomeScreen');
     } catch (error) {
@@ -61,12 +75,6 @@ const AdminLoginScreen: React.FC = () => {
         <Button type="submit" variant="primary" className="mt-3" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </Button>
-
-        <Row className="py-3">
-          <Col>
-            Don't have an account? <Link to="/admin-register">Register</Link> 
-          </Col>
-        </Row>
       </Form>
     </FormContainer>
   );

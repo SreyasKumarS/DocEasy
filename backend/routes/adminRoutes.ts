@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import authenticateAdmin from '../middleware/authMiddleware.js'
 import {
     loginAdmin,
     logoutAdmin,
@@ -22,8 +23,13 @@ router.post('/resetAdminPassword', resetAdminPassword);
 
 
 // New doctor-related routes
-router.get('/unapproved', fetchUnapprovedDoctors);   // Fetch unapproved doctors
-router.put('/approve/:doctorId', approveDoctor);     // Approve a doctor
-router.delete('/delete/:doctorId', deleteDoctor);           // Reject a doctor
+// router.get('/unapproved', fetchUnapprovedDoctors);   // Fetch unapproved doctors
+// router.put('/approve/:doctorId', approveDoctor);     // Approve a doctor
+// router.delete('/delete/:doctorId', deleteDoctor);           // Reject a doctor
+
+router.get('/unapproved', authenticateAdmin, fetchUnapprovedDoctors);
+router.put('/approve/:doctorId', authenticateAdmin, approveDoctor);
+router.delete('/delete/:doctorId', authenticateAdmin, deleteDoctor);
+
 
 export default router;

@@ -46,7 +46,6 @@ const loginPatient = async (req: Request, res: Response, next: NextFunction): Pr
       const result = await PatientService.loginPatient(email, password, res);
       return res.status(200).json({
           message: 'Login successful',
-          token: result.token,
           patient: result.patient,
       });
   } catch (error) {

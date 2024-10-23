@@ -27,14 +27,13 @@ const resendOtp = async (req: Request, res: Response, next: NextFunction): Promi
 
 // Login Admin
 const loginAdmin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  console.log('controller hit')
   const { email, password } = req.body;
   try {
     const result = await AdminService.loginAdmin(email, password, res);
     return res.status(200).json({
       message: 'Login successful',
-      token: result.token,
       admin: result.admin,
+      token: result.token, // Include the token in the response if needed
     });
   } catch (error) {
     next(error);
@@ -104,6 +103,7 @@ const fetchUnapprovedDoctors = async (req: Request, res: Response, next: NextFun
 
 // Approve a doctor
 const approveDoctor = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  console.log('unporovedddddddddddddddddddddddddd')
   const { doctorId } = req.params;
   try {
     await AdminService.approveDoctor(doctorId);  // Approve doctor in the service

@@ -6,11 +6,6 @@ const registerDoctor = async (req: Request, res: Response, next: NextFunction): 
   console.log('hit multer backend controller')
   const { name, email, password, specialization, licenseNumber } = req.body;
 
-  console.log('Register Doctor request received');
-  console.log('Request Body:', req.body); 
-  console.log('Uploaded File:', req.file); 
-  
-  
   const medicalLicense = req.file ? req.file.path : null;
 
   try {
@@ -55,12 +50,10 @@ const resendOtp = async (req: Request, res: Response, next: NextFunction): Promi
 const loginDoctor = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   
   const { email, password } = req.body;
-  console.log('Request Body:', req.body, 'got itttttttttttttt'); 
   try {
     const result = await DoctorService.loginDoctor(email, password, res);
     return res.status(200).json({
       message: 'Login successful',
-      token: result.token,
       doctor: result.doctor,
     });
   } catch (error) {

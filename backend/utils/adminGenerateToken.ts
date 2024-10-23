@@ -17,7 +17,7 @@ function adminGenerateToken(res: Response, adminId: string): string {
     res.cookie('userJwt', token, {
         httpOnly: true, 
         secure: process.env.NODE_ENV === 'production', 
-        sameSite: 'strict', 
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',  // Use 'Lax' fo
         maxAge: 30 * 24 * 60 * 60 * 1000, 
     });
     return token; 

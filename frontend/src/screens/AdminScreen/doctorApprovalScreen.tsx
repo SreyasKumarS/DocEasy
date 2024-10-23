@@ -19,7 +19,7 @@ const DoctorApprovals: React.FC = () => {
 
   const fetchDoctors = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/admin/unapproved');
+      const response = await axios.get('http://localhost:5000/api/admin/unapproved', { withCredentials: true });
       setDoctors(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       setDoctors([]);
@@ -32,7 +32,9 @@ const DoctorApprovals: React.FC = () => {
   
   const handleApprove = async (doctorId: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/approve/${doctorId}`);
+      await axios.put(`http://localhost:5000/api/admin/approve/${doctorId}`, {}, {
+        withCredentials: true, // Ensures that cookies like userJwt are sent
+      });
       fetchDoctors();
     } catch (error) {
       console.error("Error approving doctor:", error);
@@ -41,7 +43,9 @@ const DoctorApprovals: React.FC = () => {
 
   const handleReject = async (doctorId: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/delete/${doctorId}`);
+      await axios.delete(`http://localhost:5000/api/admin/delete/${doctorId}`, {
+        withCredentials: true, // Ensures that cookies like userJwt are sent
+      });
       fetchDoctors();
     } catch (error) {
       console.error("Error rejecting doctor:", error);

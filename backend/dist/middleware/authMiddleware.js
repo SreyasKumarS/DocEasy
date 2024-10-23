@@ -1,16 +1,22 @@
 import jwt from 'jsonwebtoken';
-const authMiddleware = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+const authenticateAdmin = (req, res, next) => {
+    const token = req.cookies.userJwt; // Extract the token from cookies
+    console.log(token, 'tokeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     if (!token) {
-        return res.status(403).json({ message: 'Access denied. No token provided.' });
+        return res.status(401).json({ message: 'Unauthorized' });
     }
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+    // Use jwt.verify with the appropriate callback signature
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+        // Cast decoded to JwtPayload
+        const payload = decoded;
+        // Ensure the userId is available
+        if (payload && typeof payload.userId === 'string') {
+            req.adminId = payload.userId; // Attach the admin ID to the request object
+        }
         next();
-    }
-    catch (error) {
-        return res.status(400).json({ message: 'Invalid token.' });
-    }
+    });
 };
-export default authMiddleware;
+export default authenticateAdmin;
