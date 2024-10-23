@@ -13,10 +13,23 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 connectDB();
-app.use(cors({
-    origin: 'http://localhost:5173', // replace with your frontend URL
-    credentials: true,
-}));
+// app.use(cors({
+//   origin: 'http://localhost:5173', // replace with your frontend URL
+//   credentials: true,
+// }));
+const allowedOrigins = ['http://localhost:5177'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true, // This allows cookies to be sent and received
+};
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

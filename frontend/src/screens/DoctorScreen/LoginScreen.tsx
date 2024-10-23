@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/patientComponents/FormContainer"; 
 import { useLoginDoctorMutation } from '../../slices/doctorSlice/doctorApiSlice'; 
 import { setCredentials } from "../../slices/doctorSlice/doctorAuthSlice"; 
-import { useDispatch } from 'react-redux'; 
+import { useDispatch,useSelector } from 'react-redux'; 
 import { toast } from "react-toastify";
+import { RootState } from '../../../store'; 
 
 
 
@@ -15,6 +16,15 @@ const DoctorLoginScreen: React.FC = () => {
   const [loginDoctor, { isLoading }] = useLoginDoctorMutation(); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.DoctorAuth.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/doctor/DoctorHomeScreen');
+    }
+  }, [user, navigate])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 

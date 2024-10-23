@@ -17,7 +17,6 @@ const AdminLoginScreen: React.FC = () => {
 
   const user = useSelector((state: RootState) => state.AdminAuth.user);
 
-  // Redirect if already logged in (adminInfo/token exists)
   useEffect(() => {
     if (user) {
       navigate('/admin/adminHomeScreen');

@@ -23,8 +23,8 @@ const AdminHomeScreen: React.FC = () => {
             <Nav.Link onClick={() => navigateTo('/admin/DoctorApprovalScreen')} className="text-dark">
               Doctor Approvals
             </Nav.Link>
-            <Nav.Link onClick={() => navigateTo('/admin/manage-users')} className="text-dark">
-              Manage Users
+            <Nav.Link onClick={() => navigateTo('/admin/patientListingScreen')} className="text-dark">
+              Manage Patients
             </Nav.Link>
             <Nav.Link onClick={() => navigateTo('/admin/settings')} className="text-dark">
               Settings
@@ -73,7 +73,7 @@ const AdminHomeScreen: React.FC = () => {
                     <Button
                       variant="secondary"
                       className="btn-hover"
-                      onClick={() => navigateTo('/admin/manage-users')}
+                      onClick={() => navigateTo('/admin/patientListingScreen')}
                     >
                       Manage Users
                     </Button>

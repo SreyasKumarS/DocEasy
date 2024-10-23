@@ -2,7 +2,7 @@ import { Router } from 'express';
 import authenticateAdmin from '../middleware/authMiddleware.js';
 import { loginAdmin, logoutAdmin, verifyOtp, resendOtp, sendAdminResetOtp, resetAdminPassword, fetchUnapprovedDoctors, // New route for fetching unapproved doctors
 approveDoctor, // New route for approving a doctor
-deleteDoctor // New route for rejecting a doctor
+deleteDoctor, fetchPatientListing, deletePatient // New route for rejecting a doctor
  } from '../controllers/adminController.js';
 const router = Router();
 router.post('/login', loginAdmin);
@@ -18,4 +18,6 @@ router.post('/resetAdminPassword', resetAdminPassword);
 router.get('/unapproved', authenticateAdmin, fetchUnapprovedDoctors);
 router.put('/approve/:doctorId', authenticateAdmin, approveDoctor);
 router.delete('/delete/:doctorId', authenticateAdmin, deleteDoctor);
+router.get('/patientlisting', authenticateAdmin, fetchPatientListing);
+router.delete('/deletePatient/:patientId', authenticateAdmin, deletePatient);
 export default router;

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../../components/patientComponents/FormContainer";
 import { useLoginPatientMutation } from '../../slices/patientSlice/patientApiSlice'; 
 import { setCredentials } from "../../slices/patientSlice/patientAuthSlice";
-import { useDispatch } from 'react-redux'; 
+import { useDispatch,useSelector } from 'react-redux';
+import { RootState } from '../../../store'; 
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -12,6 +13,17 @@ const LoginScreen: React.FC = () => {
   const [loginPatient, { isLoading }] = useLoginPatientMutation(); 
   const navigate = useNavigate(); 
   const dispatch = useDispatch();
+
+
+  const user = useSelector((state: RootState) => state.PatientAuth.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate])
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 

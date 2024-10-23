@@ -137,33 +137,30 @@ async loginAdmin(email: string, password: string, res: Response): Promise<{
   // Fetch unapproved doctors----------------------------------------------------------------
   async fetchUnapprovedDoctors(): Promise<any[]> {
     try {
-      console.log('entered bacekkn service for unapproved');
       const unapprovedDoctors = await AdminRepository.findUnapprovedDoctors();
       return unapprovedDoctors;
       
-       // Return the list of unapproved doctors
+
     } catch (error) {
       console.error('Error fetching unapproved doctors:', error);
       throw new Error('Internal server error');
     }
   }
 
-  // Approve a doctor
   async approveDoctor(doctorId: string): Promise<void> {
     try {
       const doctor = await AdminRepository.findDoctorById(doctorId);
       if (!doctor) {
         throw new Error('Doctor not found');
       }
-      doctor.isApproved = true; // Update the doctor's approval status
-      await AdminRepository.updateDoctor(doctor); // Save changes
+      doctor.isApproved = true; 
+      await AdminRepository.updateDoctor(doctor); 
     } catch (error) {
       console.error('Error approving doctor:', error);
       throw new Error('Internal server error');
     }
   }
 
-  // Reject a doctor
   async deleteDoctor(doctorId: string): Promise<void> {
     try {
       const doctor = await AdminRepository.findDoctorById(doctorId);
@@ -171,8 +168,6 @@ async loginAdmin(email: string, password: string, res: Response): Promise<{
       if (!doctor) {
         throw new Error('Doctor not found');
       }
-      
-      // Call the delete function to remove the doctor
       await AdminRepository.deleteDoctor(doctorId);
       console.log('Doctor has been deleted successfully.');
     } catch (error) {
@@ -181,14 +176,38 @@ async loginAdmin(email: string, password: string, res: Response): Promise<{
     }
   }
   
+  async fetchPatientListing (): Promise<any[]> {
+    try {
+      
+      const unapprovedDoctors = await AdminRepository.findPatients();
+      return unapprovedDoctors;
+    } catch (error) {
+      console.error('Error fetching unapproved doctors:', error);
+      throw new Error('Internal server error');
+    }
+  }
+
+
+  async deletePatient(patientId: string): Promise<void> {
+    try {
+     
+      const patient = await AdminRepository.findPatientById(patientId);
+      if (!patient) {
+        throw new Error('Patient not found');
+      } 
+      await AdminRepository.deletePatient(patientId);
+      console.log('Patient has been deleted successfully.');
+    } catch (error) {
+      console.error('Error rejecting (deleting) patient:', error);
+      throw new Error('Internal server error');
+    }
+  }
+  
+
+
+
+
 
 }
-
-
-
-
-
-
-
 
 export default new AdminService();

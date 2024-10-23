@@ -33,7 +33,7 @@ const DoctorApprovals: React.FC = () => {
   const handleApprove = async (doctorId: string) => {
     try {
       await axios.put(`http://localhost:5000/api/admin/approve/${doctorId}`, {}, {
-        withCredentials: true, // Ensures that cookies like userJwt are sent
+        withCredentials: true, 
       });
       fetchDoctors();
     } catch (error) {
@@ -44,7 +44,7 @@ const DoctorApprovals: React.FC = () => {
   const handleReject = async (doctorId: string) => {
     try {
       await axios.delete(`http://localhost:5000/api/admin/delete/${doctorId}`, {
-        withCredentials: true, // Ensures that cookies like userJwt are sent
+        withCredentials: true, 
       });
       fetchDoctors();
     } catch (error) {
@@ -60,6 +60,7 @@ const DoctorApprovals: React.FC = () => {
           <Table striped bordered hover responsive>
             <thead>
               <tr>
+                <th>Index</th> 
                 <th>Name</th>
                 <th>Email</th>
                 <th>License Number</th>
@@ -73,8 +74,9 @@ const DoctorApprovals: React.FC = () => {
               {doctors && doctors.length > 0 ? (
                 doctors
                   .filter((doctor) => !doctor.isApproved)
-                  .map((doctor) => (
+                  .map((doctor, index) => (
                     <tr key={doctor._id}>
+                      <td>{index + 1}</td> 
                       <td>{doctor.name}</td>
                       <td>{doctor.email}</td>
                       <td>{doctor.licenseNumber}</td>
@@ -93,7 +95,7 @@ const DoctorApprovals: React.FC = () => {
                   ))
               ) : (
                 <tr>
-                  <td colSpan={7}>No unapproved doctors found.</td>
+                  <td colSpan={8}>No unapproved doctors found.</td>
                 </tr>
               )}
             </tbody>

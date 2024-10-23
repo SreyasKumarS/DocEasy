@@ -24,7 +24,8 @@ import AdminHomeScreen from './screens/AdminScreen/homeScreen';
 import AdminLoginScreen from './screens/AdminScreen/loginScreen';
 import AdminForgotPasswordScreen from './screens/AdminScreen/forgotPassword';
 import AdminResetPasswordScreen from './screens/AdminScreen/resetPassword';
-import DoctorApprovals from './screens/AdminScreen/doctorApprovalScreen'
+import DoctorApprovals from './screens/AdminScreen/doctorApprovalScreen';
+import PatientListings from './screens/AdminScreen/patientListingScreen'
 
 
 const router = createBrowserRouter(
@@ -44,7 +45,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<DoctorLoginScreen />} />
       <Route path="DoctorHomeScreen" element={<DoctorHomeScreen />} />
       <Route path="DoctorForgotPasswordScreen" element={<DoctorForgotPasswordScreen />} />
-      <Route path="DoctorResetPasswordScreen" element={<DoctorResetPasswordScreen />} />
+      <Route path="DoctorResetPasswordScreen" element={< PatientListings />} />
       </Route>
 
 
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
       <Route path="adminForgotPasswordScreen" element={<AdminForgotPasswordScreen />} />
       <Route path="adminResetPasswordScreen" element={<AdminResetPasswordScreen />} />
       <Route path="DoctorApprovalScreen" element={<DoctorApprovals />} />
+      <Route path="patientListingScreen" element={<PatientListings />} />
       </Route>
 
     </Route>

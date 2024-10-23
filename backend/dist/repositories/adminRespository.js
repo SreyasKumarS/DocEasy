@@ -1,5 +1,6 @@
 import Admin from '../models/admin.js';
-import Doctor from '../models/doctor.js'; // Make sure to import the IDoctor interface
+import Doctor from '../models/doctor.js';
+import Patient from '../models/patient.js';
 class AdminRepository {
     async findByEmail(email) {
         return Admin.findOne({ email });
@@ -9,27 +10,38 @@ class AdminRepository {
         return admin.save();
     }
     async updateAdmin(admin) {
-        return admin.save(); // This should work as `admin` is expected to be an instance of the Admin model
+        return admin.save();
     }
-    // New Method: Find unapproved doctors
     async findUnapprovedDoctors() {
-        return Doctor.find({ isApproved: false }); // Adjust the query as per your schema
+        return Doctor.find({ isApproved: false });
     }
-    // New Method: Find doctor by ID
     async findDoctorById(doctorId) {
-        return Doctor.findById(doctorId); // This returns an instance of IDoctor or null
+        return Doctor.findById(doctorId);
     }
-    // New Method: Update doctor details
+    async findPatientById(patientId) {
+        return Patient.findById(patientId);
+    }
     async updateDoctor(doctor) {
-        return doctor.save(); // Call save on the instance of the doctor document
+        return doctor.save();
     }
     async deleteDoctor(doctorId) {
         try {
-            await Doctor.findByIdAndDelete(doctorId); // This will remove the doctor from the database
+            await Doctor.findByIdAndDelete(doctorId);
             console.log(`Doctor with ID ${doctorId} deleted successfully.`);
         }
         catch (error) {
             console.error('Error deleting doctor:', error);
+            throw new Error('Internal server error');
+        }
+    }
+    async findPatients() {
+        return Patient.find({ isVerified: true });
+    }
+    async deletePatient(patientId) {
+        try {
+            await Patient.findByIdAndDelete(patientId);
+        }
+        catch (error) {
             throw new Error('Internal server error');
         }
     }
