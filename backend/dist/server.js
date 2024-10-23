@@ -17,7 +17,7 @@ connectDB();
 //   origin: 'http://localhost:5173', // replace with your frontend URL
 //   credentials: true,
 // }));
-const allowedOrigins = ['http://localhost:5177'];
+const allowedOrigins = ['http://localhost:5178'];
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {

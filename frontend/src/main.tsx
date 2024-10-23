@@ -18,7 +18,8 @@ import DoctorHomeScreen from './screens/DoctorScreen/HomeScreen';
 import DoctorRegisterScreen from './screens/DoctorScreen/RegisterScreen';
 import DoctorLoginScreen from './screens/DoctorScreen/LoginScreen';
 import DoctorForgotPasswordScreen from './screens/DoctorScreen/ForgotPassword';
-import DoctorResetPasswordScreen from './screens/DoctorScreen/ResetPassword';
+import ResetDoctorPasswordWithOtpScreen from './screens/DoctorScreen/ResetPassword';
+
 
 import AdminHomeScreen from './screens/AdminScreen/homeScreen'; 
 import AdminLoginScreen from './screens/AdminScreen/loginScreen';
@@ -26,6 +27,7 @@ import AdminForgotPasswordScreen from './screens/AdminScreen/forgotPassword';
 import AdminResetPasswordScreen from './screens/AdminScreen/resetPassword';
 import DoctorApprovals from './screens/AdminScreen/doctorApprovalScreen';
 import PatientListings from './screens/AdminScreen/patientListingScreen'
+import DoctorListings from './screens/AdminScreen/doctorListingScreen'
 
 
 const router = createBrowserRouter(
@@ -45,7 +47,8 @@ const router = createBrowserRouter(
       <Route path="login" element={<DoctorLoginScreen />} />
       <Route path="DoctorHomeScreen" element={<DoctorHomeScreen />} />
       <Route path="DoctorForgotPasswordScreen" element={<DoctorForgotPasswordScreen />} />
-      <Route path="DoctorResetPasswordScreen" element={< PatientListings />} />
+      <Route path="resetpassword" element={<ResetDoctorPasswordWithOtpScreen />} />
+
       </Route>
 
 
@@ -57,6 +60,7 @@ const router = createBrowserRouter(
       <Route path="adminResetPasswordScreen" element={<AdminResetPasswordScreen />} />
       <Route path="DoctorApprovalScreen" element={<DoctorApprovals />} />
       <Route path="patientListingScreen" element={<PatientListings />} />
+      <Route path="doctorListingScreen" element={<DoctorListings />} />
       </Route>
 
     </Route>

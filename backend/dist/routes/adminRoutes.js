@@ -1,9 +1,6 @@
 import { Router } from 'express';
 import authenticateAdmin from '../middleware/authMiddleware.js';
-import { loginAdmin, logoutAdmin, verifyOtp, resendOtp, sendAdminResetOtp, resetAdminPassword, fetchUnapprovedDoctors, // New route for fetching unapproved doctors
-approveDoctor, // New route for approving a doctor
-deleteDoctor, fetchPatientListing, deletePatient // New route for rejecting a doctor
- } from '../controllers/adminController.js';
+import { loginAdmin, logoutAdmin, verifyOtp, resendOtp, sendAdminResetOtp, resetAdminPassword, fetchUnapprovedDoctors, approveDoctor, deleteDoctor, fetchPatientListing, deletePatient, blockDoctor, unblockDoctor, fetchAllDoctors } from '../controllers/adminController.js';
 const router = Router();
 router.post('/login', loginAdmin);
 router.post('/logout', logoutAdmin);
@@ -20,4 +17,7 @@ router.put('/approve/:doctorId', authenticateAdmin, approveDoctor);
 router.delete('/delete/:doctorId', authenticateAdmin, deleteDoctor);
 router.get('/patientlisting', authenticateAdmin, fetchPatientListing);
 router.delete('/deletePatient/:patientId', authenticateAdmin, deletePatient);
+router.put('/block/:doctorId', authenticateAdmin, blockDoctor);
+router.put('/unblock/:doctorId', authenticateAdmin, unblockDoctor);
+router.get('/fetchAllDoctors', authenticateAdmin, fetchAllDoctors);
 export default router;

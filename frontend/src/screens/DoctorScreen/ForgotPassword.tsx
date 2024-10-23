@@ -69,7 +69,8 @@ const RequestDoctorOtpScreen: React.FC = () => {
     try {
       await verifyDoctorOtp({ email, otp }).unwrap();
       toast.success('OTP Verified Successfully!');
-      navigate('/doctor/DoctorResetPasswordScreen', { state: { email } }); 
+      console.log('erorrrrrrrrrrrrrrrrrrrrrrrrrrr')
+      navigate('/doctor/resetpassword', { state: { email } }); 
     } catch (error) {
       toast.error('OTP verification failed, please try again');
       console.error('Error verifying OTP:', error);

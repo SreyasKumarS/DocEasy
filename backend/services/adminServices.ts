@@ -206,6 +206,45 @@ async loginAdmin(email: string, password: string, res: Response): Promise<{
 
 
 
+  async blockDoctor(doctorId: string): Promise<void> {
+    try {
+      const doctor = await AdminRepository.findDoctorById(doctorId);
+      if (!doctor) {
+        throw new Error('Doctor not found');
+      }
+      doctor.isApproved = false; // Block the doctor
+      await AdminRepository.updateDoctor(doctor);
+    } catch (error) {
+      console.error('Error blocking doctor:', error);
+      throw new Error('Internal server error');
+    }
+  }
+
+  async unblockDoctor(doctorId: string): Promise<void> {
+    try {
+      const doctor = await AdminRepository.findDoctorById(doctorId);
+      if (!doctor) {
+        throw new Error('Doctor not found');
+      }
+      doctor.isApproved = true; // Unblock the doctor
+      await AdminRepository.updateDoctor(doctor);
+    } catch (error) {
+      console.error('Error unblocking doctor:', error);
+      throw new Error('Internal server error');
+    }
+  }
+
+
+  async fetchAllDoctors(): Promise<any[]> {
+    try {
+      const doctors = await AdminRepository.findAllDoctors();
+      return doctors;
+    } catch (error) {
+      console.error('Error fetching all doctors:', error);
+      throw new Error('Internal server error');
+    }
+  }
+  
 
 
 }

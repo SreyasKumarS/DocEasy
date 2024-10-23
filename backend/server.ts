@@ -23,7 +23,7 @@ connectDB();
 // }));
 
 
-const allowedOrigins = ['http://localhost:5177'];
+const allowedOrigins = ['http://localhost:5178'];
 
 const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {

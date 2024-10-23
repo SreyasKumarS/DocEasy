@@ -154,9 +154,51 @@ const deletePatient = async (req: Request, res: Response, next: NextFunction): P
 
 
 
+
+// Block a doctor
+const blockDoctor = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const { doctorId } = req.params;
+  try {
+    await AdminService.blockDoctor(doctorId); // Block doctor in the service
+    return res.status(200).json({ message: 'Doctor blocked successfully' });
+  } catch (error) {
+    console.error('Error blocking doctor:', error);
+    next(error);
+  }
+};
+
+// Unblock a doctor
+const unblockDoctor = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const { doctorId } = req.params;
+  try {
+    await AdminService.unblockDoctor(doctorId); // Unblock doctor in the service
+    return res.status(200).json({ message: 'Doctor unblocked successfully' });
+  } catch (error) {
+    console.error('Error unblocking doctor:', error);
+    next(error);
+  }
+};
+
+
+
+// Fetch all doctors
+const fetchAllDoctors = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    // Fetch all doctors from the database
+    const doctors = await AdminService.fetchAllDoctors();  // Assuming this function is defined in the service
+    return res.status(200).json(doctors);
+  } catch (error) {
+    console.error('Error fetching all doctors:', error);
+    next(error);
+  }
+};
+
+
+
 export { verifyOtp, resendOtp, 
   loginAdmin, logoutAdmin, 
   sendAdminResetOtp, resetAdminPassword,
   fetchUnapprovedDoctors, approveDoctor, 
   deleteDoctor,fetchPatientListing,
-deletePatient };
+deletePatient,blockDoctor, unblockDoctor,fetchAllDoctors
+ };

@@ -26,8 +26,8 @@ const AdminHomeScreen: React.FC = () => {
             <Nav.Link onClick={() => navigateTo('/admin/patientListingScreen')} className="text-dark">
               Manage Patients
             </Nav.Link>
-            <Nav.Link onClick={() => navigateTo('/admin/settings')} className="text-dark">
-              Settings
+            <Nav.Link onClick={() => navigateTo('/admin/doctorListingScreen')} className="text-dark">
+              Manage Doctors
             </Nav.Link>
           </Nav>
         </Col>
@@ -87,17 +87,17 @@ const AdminHomeScreen: React.FC = () => {
                   <Card.Body>
                     <div className="d-flex align-items-center">
                       <FaCog size={30} className="me-3 text-warning" /> {/* Icon */}
-                      <Card.Title>System Settings</Card.Title>
+                      <Card.Title> Manage Doctors</Card.Title>
                     </div>
                     <Card.Text>
-                      Configure system settings and customize the platform preferences.
+                    View and manage the Doctors who are registered on the platform.
                     </Card.Text>
                     <Button
                       variant="warning"
                       className="btn-hover"
-                      onClick={() => navigateTo('/admin/settings')}
+                      onClick={() => navigateTo('/admin/doctorListingScreen')}
                     >
-                      Go to Settings
+                      Manage Doctors
                     </Button>
                   </Card.Body>
                 </Card>

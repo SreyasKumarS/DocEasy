@@ -45,5 +45,21 @@ class AdminRepository {
             throw new Error('Internal server error');
         }
     }
+    // async findDoctorById(doctorId: string): Promise<IDoctor | null> {
+    //   return Doctor.findById(doctorId);
+    // }
+    // async updateDoctor(doctor: IDoctor): Promise<IDoctor> {
+    //   return doctor.save(); // Save the updated doctor data
+    // }
+    async findAllDoctors() {
+        try {
+            const doctors = await Doctor.find(); // Fetches all doctors from the 'Doctor' collection
+            return doctors;
+        }
+        catch (error) {
+            console.error('Error fetching all doctors from database:', error);
+            throw new Error('Internal server error while fetching doctors');
+        }
+    }
 }
 export default new AdminRepository();
