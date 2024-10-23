@@ -20,16 +20,13 @@ const DoctorApprovals: React.FC = () => {
   const fetchDoctors = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/admin/unapproved');
-      console.log(response.data);
       setDoctors(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error("Error fetching doctors:", error);
       setDoctors([]);
     }
   };
   
   useEffect(() => {
-    console.log('running')
     fetchDoctors();
   }, []);
   

@@ -37,7 +37,7 @@ const AdminHeader = () => {
     <div className="container-fluid">
       <Link
         className="navbar-brand text-white"
-        to="/admin/adminHomeScreen" // Set the route you want to navigate to
+        to="/admin/adminHomeScreen" 
         style={{
           fontSize: '1.5rem',
           fontWeight: '600',

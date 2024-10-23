@@ -116,7 +116,7 @@ const RegisterScreen: React.FC = () => {
             <Form.Group className="my-2" controlId='email'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control
-                // type="email"
+                type="email"
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

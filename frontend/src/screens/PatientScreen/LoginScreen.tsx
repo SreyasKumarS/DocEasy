@@ -19,8 +19,6 @@ const LoginScreen: React.FC = () => {
     try {
       const result = await loginPatient({ email, password }).unwrap(); 
       dispatch(setCredentials(result)); 
-      console.log('Login successful, received token:', result.token);
-
       navigate('/'); 
     } catch (error) {
       console.error('Login failed:', error); 
